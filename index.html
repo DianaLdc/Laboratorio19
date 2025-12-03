@@ -2,28 +2,16 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Pokémon 1 al 10</title>
-    <style>
-        .tarjeta {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin: 10px;
-            width: 180px;
-            display: inline-block;
-            text-align: center;
-            border-radius: 10px;
-            background: #f7f7f7;
-        }
-        img {
-            width: 120px;
-        }
-    </style>
+    <title>Buscador de Tipos de Pokémon</title>
 </head>
 <body>
 
-    <h1>Pokémon del 1 al 10</h1>
+    <h1>Buscar Pokémon por nombre o ID</h1>
 
-    <div id="contenedor"></div>
+    <input type="text" id="entrada" placeholder="Ej: pikachu o 25">
+    <button id="btnBuscar">Buscar</button>
+
+    <div id="resultado" style="margin-top: 20px;"></div>
 
     <script src="app.js"></script>
 </body>
