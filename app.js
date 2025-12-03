@@ -1,4 +1,4 @@
-//Ejercicio 3
+<!--Ejercicio 3
 const id = prompt("Ingresa un ID de Pokémon");
 
 fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
@@ -10,6 +10,7 @@ fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
 
 
 //Ejercicio 4 
+
 
 fetch("https://pokeapi.co/api/v2/pokemon/pikachu")
     .then(response => response.json())
@@ -105,6 +106,39 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
             resultado.innerHTML = `<p>${error.message}</p>`;
         });
 });
+-->
+//Ejercicio 10 
+
+window.onload = () => {
+    const contenedor = document.getElementById("contenedor");
+    const listaPokemones = [];
+ 
+    function mostrarTarjetas() {
+        contenedor.innerHTML = "";
+
+        listaPokemones.forEach(poke => {
+            contenedor.innerHTML += `
+                <div class="tarjeta">
+                    <h3>${poke.name}</h3>
+                    <img src="${poke.sprites.front_default}" alt="${poke.name}">
+                    <p>ID: ${poke.id}</p>
+                </div>
+            `;
+        });
+    }
+ 
+    for (let i = 1; i <= 10; i++) {
+        fetch(`https://pokeapi.co/api/v2/pokemon/${i}`)
+            .then(res => res.json())
+            .then(data => {
+                listaPokemones.push(data);  
+                if (listaPokemones.length === 10) {
+                    mostrarTarjetas();  
+                }
+            })
+            .catch(err => console.error("Error:", err));
+    }
+};
 
 
 
