@@ -1,4 +1,4 @@
-<!--Ejercicio 3
+//Ejercicio 3
 const id = prompt("Ingresa un ID de Pokémon");
 
 fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
@@ -106,7 +106,7 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
             resultado.innerHTML = `<p>${error.message}</p>`;
         });
 });
--->
+
 //Ejercicio 10 
 
 window.onload = () => {
@@ -140,6 +140,37 @@ window.onload = () => {
     }
 };
 
+//Ejercicio 11 
+
+document.getElementById("btnBuscar").addEventListener("click", () => {
+    const entrada = document.getElementById("entrada").value.trim().toLowerCase();
+    const resultado = document.getElementById("resultado");
+
+    if (entrada === "") {
+        resultado.innerHTML = "<p>Ingresa un nombre o ID.</p>";
+        return;
+    }
+
+    fetch(`https://pokeapi.co/api/v2/pokemon/${entrada}`)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Pokémon no encontrado");
+            }
+            return res.json();
+        })
+        .then(data => { 
+            const tipos = data.types.map(t => t.type.name).join(", ");
+
+            resultado.innerHTML = `
+                <h2>${data.name} (ID: ${data.id})</h2>
+                <img src="${data.sprites.front_default}" alt="${data.name}">
+                <p><strong>Tipos:</strong> ${tipos}</p>
+            `;
+        })
+        .catch(error => {
+            resultado.innerHTML = `<p>${error.message}</p>`;
+        });
+});
 
 
 
