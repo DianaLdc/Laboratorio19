@@ -172,6 +172,41 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
         });
 });
 
+//Ejercicio 12
+document.getElementById("btnBuscar").addEventListener("click", () => {
+    const entrada = document.getElementById("entrada").value.trim().toLowerCase();
+    const resultado = document.getElementById("resultado");
+
+    if (entrada === "") {
+        resultado.innerHTML = "<p>Ingresa un nombre o ID.</p>";
+        return;
+    }
+
+    fetch(`https://pokeapi.co/api/v2/pokemon/${entrada}`)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Pokémon no encontrado");
+            }
+            return res.json();
+        })
+        .then(data => {
+            const statsHTML = data.stats
+                .map(statObj => `<li>${statObj.stat.name}: ${statObj.base_stat}</li>`)
+                .join("");
+
+            resultado.innerHTML = `
+                <h2>${data.name} (ID: ${data.id})</h2>
+                <img src="${data.sprites.front_default}" alt="${data.name}">
+                <h3>Estadísticas base:</h3>
+                <ul>
+                    ${statsHTML}
+                </ul>
+            `;
+        })
+        .catch(error => {
+            resultado.innerHTML = `<p>${error.message}</p>`;
+        });
+});
 
 
 
