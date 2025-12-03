@@ -1,10 +1,18 @@
-// Ejercicio 1: Pedir ID y mostrar el nombre
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Buscador de Pokémon</title>
+</head>
+<body>
+    <h1>Buscador de Pokémon por ID</h1>
 
-const id = prompt("Ingresa un ID de Pokémon");
+    <label for="pokemonId">ID del Pokémon (1 - 898):</label>
+    <input type="number" id="pokemonId" min="1" max="898">
+    <button id="btnBuscar">Buscar</button>
 
-fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-    .then(res => res.json())
-    .then(data => {
-        console.log("Nombre:", data.name);
-    })
-    .catch(err => console.error("Error:", err));
+    <div id="resultado" style="margin-top:20px;"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
