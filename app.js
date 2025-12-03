@@ -208,12 +208,87 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
         });
 });
 
+//Ejercicio 13
+document.getElementById("btnBuscar").addEventListener("click", () => {
+    const entrada = document.getElementById("entrada").value.trim().toLowerCase();
+    const resultado = document.getElementById("resultado");
+    if (entrada === "") {
+        resultado.innerHTML = "<p>Ingresa un nombre o ID.</p>";
+        return;
+    }
+    fetch(`https://pokeapi.co/api/v2/pokemon/${entrada}`)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Pokémon no encontrado");
+            }
+            return res.json();
+        })
+        .then(data => {
+            const statsNecesarias = ["hp", "attack", "defense", "speed", "special-attack", "special-defense"];
+            const filas = data.stats
+                .filter(statObj => statsNecesarias.includes(statObj.stat.name))
+                .map(statObj => `
+                    <tr>
+                        <td>${statObj.stat.name}</td>
+                        <td>${statObj.base_stat}</td>
+                    </tr>
+                `)
+                .join("");
+            resultado.innerHTML = `
+                <h2>${data.name} (ID: ${data.id})</h2>
+                <img src="${data.sprites.front_default}" alt="${data.name}">
+                <h3>Estadísticas base</h3>
+                <table border="1" cellpadding="5">
+                    <tr>
+                        <th>Stat</th>
+                        <th>Valor</th>
+                    </tr>
+                    ${filas}
+                </table>
+            `;
+        })
+        .catch(error => {
+            resultado.innerHTML = `<p>${error.message}</p>`;
+        });
+});
 
-
-
-
-
-
-
-
-
+//Ejercicio 14
+const contenedor = document.getElementById("contenedor");
+const btnAnterior = document.getElementById("anterior");
+const btnSiguiente = document.getElementById("siguiente");
+let listaPokemones = [];   
+let indice = 0;           
+async function cargarPokemones() {
+    for (let i = 1; i <= 12; i++) {
+        const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
+        const data = await resp.json();
+        listaPokemones.push(data);
+    }
+    mostrarGrupo();
+}
+function mostrarGrupo() {
+    contenedor.innerHTML = "";
+    const grupo = listaPokemones.slice(indice, indice + 3);
+    grupo.forEach(poke => {
+        contenedor.innerHTML += `
+            <div class="tarjeta">
+                <h3>${poke.name}</h3>
+                <img src="${poke.sprites.front_default}" alt="${poke.name}">
+                <p>ID: ${poke.id}</p>
+            </div>
+        `;
+    });
+}
+btnSiguiente.addEventListener("click", () => {
+    if (indice + 3 < listaPokemones.length) {
+        indice += 3;
+        mostrarGrupo();
+    }
+});
+btnAnterior.addEventListener("click", () => {
+    if (indice - 3 >= 0) {
+        indice -= 3;
+        mostrarGrupo();
+    }
+});
+cargarPokemones();
